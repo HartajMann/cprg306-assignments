@@ -4,12 +4,14 @@ import Link from "next/link";
 export default function Page()
 {
   return(
-    <div>
-      <h1> CPRG 306: Web Development 2 - Assignments</h1>
-        <StudentInfo/>
-        <p><Link href="/week2">Week 2</Link></p>
-        <p><Link href="/week3">Week 3</Link></p>
-        <p><Link href="/week4">Week 4</Link></p>
+    <div className="min-h-screen flex items-center justify-center">
+      <h1 className="text-xl font-bold absolute top-0 mt-5"> CPRG 306: Web Development 2 - Assignments</h1>
+      <div className="w-full max-w-md absolute top-12">
+        <StudentInfo />
+        <p><Link href="/week2" className="hover:text-slate-500">Week 2</Link></p>
+        <p><Link href="/week3" className="hover:text-slate-500">Week 3</Link></p>
+        <p><Link href="/week4" className="hover:text-slate-500">Week 4</Link></p>
+        </div>
     </div>
   );
 }
