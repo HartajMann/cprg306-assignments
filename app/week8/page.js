@@ -1,50 +1,45 @@
 "use client";
-import React, { useEffect, useCallback } from "react";
-import { useUserAuth } from "./_utils/auth-context";
-import { useRouter } from 'next/router';
+import React from 'react';
+import { useUserAuth } from './_utils/auth-context';
+import Link from "next/link";
 
-const UserComponent = () => {
-    const { user, gitHubSignIn, firebaseSignOut } = useUserAuth();
-    const router = useRouter();
+const Page = () => {
+  const { user, gitHubSignIn, firebaseSignOut } = useUserAuth();
 
-    const handleLogin = useCallback(async () => {
-        try {
-            await gitHubSignIn();
-        } catch (error) {
-            console.error("Login failed", error);
-        }
-    }, [gitHubSignIn]);
-
-    useEffect(() => {
-        const loginIfNoUser = async () => {
-            if (!user) {
-                await handleLogin();
-            } else {
-                router.push('/shopping-list');
-            }
-        };
-        loginIfNoUser();
-    }, [user, handleLogin, router]);
-
-    const handleLogout = async () => {
-        try {
-            await firebaseSignOut();
-        } catch (error) {
-            console.error("Logout failed", error);
-        }
-    };
-
-    if (user) {
-        return (
-            <div>
-                <p>Welcome, {user.displayName} ({user.email})</p>
-                <button onClick={handleLogout}>Logout</button>
-                <a href="/app/week8/shopping-list">Go to Shopping List</a>
-            </div>
-        );
+  const handleLogin = async () => {
+    try {
+      await gitHubSignIn();
+    } catch (error) {
+      console.error("Login failed", error);
     }
+  };
 
-    return <div>Loading...</div>;
+  const handleLogout = async () => {
+    try {
+      await firebaseSignOut();
+    } catch (error) {
+      console.error("Logout failed", error);
+    }
+  };
+
+  return (
+    <div className="min-h-screen flex items-center justify-center">
+      
+      <div className="absolute top-0">
+      <h1 className="text-xl font-bold  mt-5 mb-5">Shopping List App</h1>
+        {user ? (
+          <>
+            <p>Signed in as {user.displayName} ({user.email})</p>
+            <p><Link href="../week8/shopping-list" className="hover:text-slate-500">Continue to your Shopping List</Link></p>
+            <button onClick={handleLogout} className="hover:text-slate-500">Logout</button>
+          </>
+        ) : (
+          <button onClick={handleLogin} className="hover:text-slate-500">Login with GitHub</button>
+        )}
+      </div>
+    </div>
+  );
 };
 
-export default UserComponent;
+export default Page;
+
